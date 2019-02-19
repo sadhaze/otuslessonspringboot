@@ -1,0 +1,23 @@
+server:
+  port: 8085
+logging:
+  level:
+    ROOT: INFO
+spring:
+  profiles:
+    active: prod
+  application:
+    admin:
+      enabled: TRUE
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, beans
+
+message: "Spring Boot Lesson"
+
+country: "EN"
+language: "en"
+messageSourceBasename: "messages/messages"
+messageSourceEncoding: "Windows-1251"
