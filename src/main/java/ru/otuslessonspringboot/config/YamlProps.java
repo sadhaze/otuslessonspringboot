@@ -8,6 +8,7 @@ public class YamlProps {
     private String language;
     private String messageSourceBasename;
     private String messageSourceEncoding;
+    private String quizDatafileName;
 
     public String getCountry(){
         return this.country;
@@ -25,6 +26,10 @@ public class YamlProps {
         return this.messageSourceEncoding;
     }
 
+    public String getQuizDatafileName(){
+        return this.quizDatafileName;
+    }
+
     public void setCountry(String country){
         this.country = country;
     }
@@ -39,6 +44,10 @@ public class YamlProps {
 
     public void setMessageSourceEncoding(String messageSourceEncoding){
         this.messageSourceEncoding = messageSourceEncoding;
+    }
+
+    public void setQuizDatafileName(String quizDatafileName){
+        this.quizDatafileName = quizDatafileName;
     }
 
 

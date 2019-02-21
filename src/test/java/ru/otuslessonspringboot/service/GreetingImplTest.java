@@ -3,15 +3,17 @@ package ru.otuslessonspringboot.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 import java.io.ByteArrayInputStream;
 import java.util.Locale;
 
+@SpringBootTest
 @DisplayName("Тест приветствия")
 class GreetingImplTest {
-    public MessageSource messageSource() {
+    private MessageSource messageSource() {
         ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
         ms.setBasename("messages/messages");
         ms.setDefaultEncoding("Windows-1251");

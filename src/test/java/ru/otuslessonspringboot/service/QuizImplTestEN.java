@@ -4,20 +4,21 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import ru.otuslessonspringboot.config.YamlProps;
 
 import java.io.ByteArrayInputStream;
 import java.util.Locale;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 @DisplayName("Тест викторины english")
 class QuizImplTestEN {
-    public MessageSource messageSource() {
+    private MessageSource messageSource() {
         ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
         ms.setBasename("messages/messages");
         ms.setDefaultEncoding("Windows-1251");
@@ -26,12 +27,15 @@ class QuizImplTestEN {
 
     private MessageSource messageSource = messageSource();
 
-    @Mock
+    @MockBean
     private AnswerCounterBundleImpl counter;
+
+    @Mock
+    private YamlProps props;
 
     private CsvQuestionReaderDaoImpl fileReader = new CsvQuestionReaderDaoImpl();
 
-    @Mock
+    @MockBean
     private GreetingBundleImpl greetingImpl;
 
     private Quiz quizServiceEN;
@@ -39,7 +43,7 @@ class QuizImplTestEN {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        quizServiceEN = new QuizBundleImpl(counter, fileReader, greetingImpl, messageSource, new Locale("en", "EN"));
+        quizServiceEN = new QuizBundleImpl(counter, fileReader, greetingImpl, messageSource, new Locale("en", "EN"), props);
     }
 
     @Test
