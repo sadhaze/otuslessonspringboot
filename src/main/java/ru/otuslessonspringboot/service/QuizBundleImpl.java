@@ -2,6 +2,7 @@ package ru.otuslessonspringboot.service;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.otuslessonspringboot.config.YamlProps;
 
 import java.util.Locale;
 import java.util.Scanner;
@@ -13,24 +14,21 @@ public class QuizBundleImpl implements Quiz {
     private GreetingBundleImpl greetingBundleImpl;
     private MessageSource messageSource;
     private Locale locale;
+    private YamlProps props;
 
     private Scanner scanner;
 
-    public QuizBundleImpl(AnswerCounterBundleImpl counter, CsvQuestionReaderDaoImpl questionReader, GreetingBundleImpl greetingBundleImpl, MessageSource messageSource, Locale locale){
+    public QuizBundleImpl(AnswerCounterBundleImpl counter, CsvQuestionReaderDaoImpl questionReader, GreetingBundleImpl greetingBundleImpl, MessageSource messageSource, Locale locale, YamlProps props){
         this.counter = counter;
         this.questionReader = questionReader;
         this.greetingBundleImpl = greetingBundleImpl;
         this.messageSource = messageSource;
         this.locale = locale;
+        this.props = props;
     }
 
     public void startQuiz(){
-        questionReader.readFile(
-                messageSource.getMessage(
-                        "quiz.datafile.name",
-                        new String[] {""},
-                        locale)
-        );
+        questionReader.readFile(props.getQuizDatafileName());
 
         System.out.println("\n" + greetingBundleImpl.getGreeting());
 

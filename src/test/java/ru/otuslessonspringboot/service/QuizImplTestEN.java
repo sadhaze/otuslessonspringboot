@@ -1,46 +1,37 @@
 package ru.otuslessonspringboot.service;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.MessageSource;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import ru.otuslessonspringboot.config.YamlProps;
 
 import java.io.ByteArrayInputStream;
-import java.util.Locale;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 @DisplayName("Тест викторины english")
 class QuizImplTestEN {
-    public MessageSource messageSource() {
-        ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
-        ms.setBasename("messages/messages");
-        ms.setDefaultEncoding("Windows-1251");
-        return ms;
-    }
+    @Autowired
+    private MessageSource messageSource;
 
-    private MessageSource messageSource = messageSource();
-
-    @Mock
+    @MockBean
     private AnswerCounterBundleImpl counter;
 
-    private CsvQuestionReaderDaoImpl fileReader = new CsvQuestionReaderDaoImpl();
+    @SpyBean
+    private YamlProps props;
 
-    @Mock
+    @Autowired
+    private CsvQuestionReaderDaoImpl fileReader;
+
+    @Autowired
     private GreetingBundleImpl greetingImpl;
 
+    @Autowired
     private Quiz quizServiceEN;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
-        quizServiceEN = new QuizBundleImpl(counter, fileReader, greetingImpl, messageSource, new Locale("en", "EN"));
-    }
 
     @Test
     @DisplayName("Тест когда номер вопроса меньше меньше или равен нулю")
