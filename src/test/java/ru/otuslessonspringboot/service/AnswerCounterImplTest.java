@@ -3,29 +3,26 @@ package ru.otuslessonspringboot.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-
-import java.util.Locale;
 
 @SpringBootTest
 @DisplayName("Тест счетчика ответов")
 class AnswerCounterImplTest {
-    private MessageSource messageSource() {
-        ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
-        ms.setBasename("messages/messages");
-        ms.setDefaultEncoding("Windows-1251");
-        return ms;
-    }
+    @Autowired
+    private MessageSource messageSource;
 
-    private MessageSource messageSource = messageSource();
+    @Autowired
+    private AnswerCounterBundleImpl answerCounterServiceEn;
 
-    private AnswerCounter answerCounterServiceEn = new AnswerCounterBundleImpl(new Locale("en", "EN"), messageSource);
+    @Autowired
+    private AnswerCounterBundleImpl answerCounterServiceRu;
 
     @Test
     @DisplayName("Тест счетчика ответов english")
     void AuthSuccessTest_En() {
+        answerCounterServiceEn.resetCount();
         answerCounterServiceEn.setRight();
         answerCounterServiceEn.setWrong();
         answerCounterServiceEn.setRight();
@@ -35,11 +32,10 @@ class AnswerCounterImplTest {
         Assertions.assertEquals("Your score: 3 right and 2 wrong answers. Congratulations!", answerCounterServiceEn.getResult());
     }
 
-    private AnswerCounter answerCounterServiceRu = new AnswerCounterBundleImpl(new Locale("ru", "RU"), messageSource);
-
     @Test
     @DisplayName("Тест счетчика ответов русский")
     void AuthSuccessTest_Rn() {
+        answerCounterServiceRu.resetCount();
         answerCounterServiceRu.setRight();
         answerCounterServiceRu.setWrong();
         answerCounterServiceRu.setRight();

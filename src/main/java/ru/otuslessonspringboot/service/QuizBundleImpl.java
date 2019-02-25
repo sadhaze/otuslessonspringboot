@@ -32,6 +32,7 @@ public class QuizBundleImpl implements Quiz {
 
         System.out.println("\n" + greetingBundleImpl.getGreeting());
 
+        counter.resetCount();
         for(int i = 0; i < questionReader.questionValidation(i); i++) {
             this.getQuestion(i);
         }

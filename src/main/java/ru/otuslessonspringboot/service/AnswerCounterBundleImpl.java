@@ -35,4 +35,9 @@ public class AnswerCounterBundleImpl implements AnswerCounter {
                 new String[] {right.toString(), wrong.toString()},
                 locale);
     }
+
+    public void resetCount(){
+        this.right = 0;
+        this.wrong = 0;
+    }
 }
