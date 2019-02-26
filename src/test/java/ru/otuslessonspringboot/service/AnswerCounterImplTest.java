@@ -5,43 +5,45 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.MessageSource;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import ru.otuslessonspringboot.config.YamlProps;
+
+import java.util.Locale;
 
 @SpringBootTest
 @DisplayName("Тест счетчика ответов")
 class AnswerCounterImplTest {
-    @Autowired
-    private MessageSource messageSource;
+    @SpyBean
+    private YamlProps props;
 
     @Autowired
-    private AnswerCounterBundleImpl answerCounterServiceEn;
-
-    @Autowired
-    private AnswerCounterBundleImpl answerCounterServiceRu;
+    private AnswerCounter answerCounterService;
 
     @Test
     @DisplayName("Тест счетчика ответов english")
     void AuthSuccessTest_En() {
-        answerCounterServiceEn.resetCount();
-        answerCounterServiceEn.setRight();
-        answerCounterServiceEn.setWrong();
-        answerCounterServiceEn.setRight();
-        answerCounterServiceEn.setWrong();
-        answerCounterServiceEn.setRight();
+        props.setLocale(new Locale("en", "EN"));
+        answerCounterService.resetCount();
+        answerCounterService.setRight();
+        answerCounterService.setWrong();
+        answerCounterService.setRight();
+        answerCounterService.setWrong();
+        answerCounterService.setRight();
 
-        Assertions.assertEquals("Your score: 3 right and 2 wrong answers. Congratulations!", answerCounterServiceEn.getResult());
+        Assertions.assertEquals("Your score: 3 right and 2 wrong answers. Congratulations!", answerCounterService.getResult());
     }
 
     @Test
     @DisplayName("Тест счетчика ответов русский")
     void AuthSuccessTest_Rn() {
-        answerCounterServiceRu.resetCount();
-        answerCounterServiceRu.setRight();
-        answerCounterServiceRu.setWrong();
-        answerCounterServiceRu.setRight();
-        answerCounterServiceRu.setWrong();
-        answerCounterServiceRu.setRight();
+        props.setLocale(new Locale("ru", "RU"));
+        answerCounterService.resetCount();
+        answerCounterService.setRight();
+        answerCounterService.setWrong();
+        answerCounterService.setRight();
+        answerCounterService.setWrong();
+        answerCounterService.setRight();
 
-        Assertions.assertEquals("пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: 3 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 2 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!", answerCounterServiceRu.getResult());
+        Assertions.assertEquals("пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: 3 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 2 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!", answerCounterService.getResult());
     }
 }
