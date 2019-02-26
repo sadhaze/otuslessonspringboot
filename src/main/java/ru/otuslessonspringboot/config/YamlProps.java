@@ -2,10 +2,13 @@ package ru.otuslessonspringboot.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.Locale;
+
 @ConfigurationProperties
 public class YamlProps {
     private String country;
     private String language;
+    private Locale locale;
     private String messageSourceBasename;
     private String messageSourceEncoding;
     private String quizDatafileName;
@@ -16,6 +19,10 @@ public class YamlProps {
 
     public String getLanguage(){
         return this.language;
+    }
+
+    public Locale getLocale(){
+        return this.locale;
     }
 
     public String getMessageSourceBasename(){
@@ -36,6 +43,14 @@ public class YamlProps {
 
     public void setLanguage(String language){
         this.language = language;
+    }
+
+    public void setLocale(){
+        this.locale = new Locale(this.language, this.country);
+    }
+
+    public void setLocale(Locale locale){
+        this.locale = locale;
     }
 
     public void setMessageSourceBasename(String messageSourceBasename){

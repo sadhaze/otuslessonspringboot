@@ -1,6 +1,5 @@
 package ru.otuslessonspringboot.service;
 
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otuslessonspringboot.config.YamlProps;
 
@@ -9,28 +8,31 @@ import java.util.Scanner;
 
 @Service("Quiz bundle service")
 public class QuizBundleImpl implements Quiz {
-    private AnswerCounterBundleImpl counter;
-    private CsvQuestionReaderDaoImpl questionReader;
-    private GreetingBundleImpl greetingBundleImpl;
-    private MessageSource messageSource;
-    private Locale locale;
+    private AnswerCounter counter;
+    private CsvQuestionReaderDao questionReader;
+    private Greeting greeting;
+    private LocalMessage localMessage;
     private YamlProps props;
 
     private Scanner scanner;
 
-    public QuizBundleImpl(AnswerCounterBundleImpl counter, CsvQuestionReaderDaoImpl questionReader, GreetingBundleImpl greetingBundleImpl, MessageSource messageSource, Locale locale, YamlProps props){
+    public QuizBundleImpl(AnswerCounter counter, CsvQuestionReaderDao questionReader, Greeting greeting, LocalMessage localMessage, YamlProps props){
         this.counter = counter;
         this.questionReader = questionReader;
-        this.greetingBundleImpl = greetingBundleImpl;
-        this.messageSource = messageSource;
-        this.locale = locale;
+        this.greeting = greeting;
+        this.localMessage = localMessage;
         this.props = props;
     }
 
     public void startQuiz(){
         questionReader.readFile(props.getQuizDatafileName());
 
-        System.out.println("\n" + greetingBundleImpl.getGreeting());
+        System.out.println(props.getLocale());
+        props.setLocale(new Locale("en", "EN"));
+        System.out.println(props.getLocale());
+
+
+        System.out.println("\n" + greeting.getGreeting());
 
         for(int i = 0; i < questionReader.questionValidation(i); i++) {
             this.getQuestion(i);
@@ -41,32 +43,20 @@ public class QuizBundleImpl implements Quiz {
 
     public String getQuestion(int questionNumber) {
         if(questionReader.questionValidation(questionNumber) == -1) {
-            return messageSource.getMessage(
-                    "quiz.noquestion",
-                    new String[] {""},
-                    locale);
+            return localMessage.getMessage("quiz.noquestion");
         }
 
-        System.out.print("\n" + questionReader.getQuestion(questionNumber) + "\n" + messageSource.getMessage(
-                "quiz.answer",
-                new String[] {""},
-                locale)
-        );
+        System.out.print("\n" + questionReader.getQuestion(questionNumber) + "\n" + localMessage.getMessage("quiz.answer"));
+
         scanner = new Scanner(System.in);
         String answer;
         answer = scanner.nextLine().toLowerCase();
         if (answer.compareTo(questionReader.getAnswer(questionNumber)) != 0){
             counter.setWrong();
-            return messageSource.getMessage(
-                    "quiz.wrong",
-                    new String[] {"\n"},
-                    locale);
+            return localMessage.getMessage("quiz.wrong");
         } else {
             counter.setRight();
-            return messageSource.getMessage(
-                    "quiz.right",
-                    new String[] {"\n"},
-                    locale);
+            return localMessage.getMessage("quiz.right");
         }
     }
 }

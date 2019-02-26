@@ -1,23 +1,18 @@
 package ru.otuslessonspringboot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-
-import java.util.Locale;
 
 @Service("Answer counter bundle service")
 public class AnswerCounterBundleImpl implements AnswerCounter {
-    private Locale locale;
-    private MessageSource messageSource;
+    private LocalMessage localMessage;
 
     private Integer right = 0;
     private Integer wrong = 0;
 
     @Autowired
-    public AnswerCounterBundleImpl(Locale locale, MessageSource messageSource){
-        this.locale = locale;
-        this.messageSource = messageSource;
+    public AnswerCounterBundleImpl(LocalMessage localMessage){
+        this.localMessage = localMessage;
     }
 
     public void setRight(){
@@ -29,10 +24,11 @@ public class AnswerCounterBundleImpl implements AnswerCounter {
     }
 
     public String getResult(){
+        return localMessage.getMessage("counter.result", new String[]{right.toString(), wrong.toString()});
+    }
 
-        return messageSource.getMessage(
-                "counter.result",
-                new String[] {right.toString(), wrong.toString()},
-                locale);
+    public void resetCount(){
+        this.wrong = 0;
+        this.right = 0;
     }
 }
