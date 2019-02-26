@@ -31,9 +31,4 @@ public class AnswerCounterBundleImpl implements AnswerCounter {
         this.wrong = 0;
         this.right = 0;
     }
-
-    public void resetCount(){
-        this.right = 0;
-        this.wrong = 0;
-    }
 }

@@ -6,33 +6,38 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.shell.jline.InteractiveShellApplicationRunner;
+import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import ru.otuslessonspringboot.config.YamlProps;
 
 import java.io.ByteArrayInputStream;
 import java.util.Locale;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
+        ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
+})
 @DisplayName("Тест приветствия")
-class GreetingImplTest {
+class GreetingTest {
     @SpyBean
     private YamlProps props;
 
     @Autowired
-    private Greeting greetingService;
+    private Greeting greeting;
 
     @Test
     @DisplayName("Тест приветствия english")
-    void greetingTest_En(){
+    void greetingTest_EN(){
         props.setLocale(new Locale("en", "EN"));
         System.setIn(new ByteArrayInputStream("Яимя\nЯфамилия\n".getBytes()));
-        Assertions.assertEquals("Hello, Яфамилия Яимя!", greetingService.getGreeting());
+        Assertions.assertEquals("Hello, Яфамилия Яимя!", greeting.getGreeting());
     }
 
     @Test
     @DisplayName("Тест приветствия русский")
-    void greetingTest_Ru(){
+    void greetingTest_RU(){
         props.setLocale(new Locale("ru", "RU"));
         System.setIn(new ByteArrayInputStream("Яимя\nЯфамилия\n".getBytes()));
-        Assertions.assertEquals("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, Яфамилия Яимя!", greetingService.getGreeting());
+        Assertions.assertEquals("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, Яфамилия Яимя!", greeting.getGreeting());
     }
 }
