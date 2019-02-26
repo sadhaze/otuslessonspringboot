@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.context.MessageSource;
 import ru.otuslessonspringboot.config.YamlProps;
 
 import java.io.ByteArrayInputStream;
@@ -15,51 +14,50 @@ import java.io.ByteArrayInputStream;
 @SpringBootTest
 @DisplayName("Тест викторины русский")
 class QuizImplTestRU {
-    @Autowired
-    private MessageSource messageSource;
-
     @MockBean
-    private AnswerCounterBundleImpl counter;
+    private AnswerCounter counter;
 
     @SpyBean
     private YamlProps props;
 
     @Autowired
-    private CsvQuestionReaderDaoImpl fileReader;
+    private CsvQuestionReaderDao fileReader;
 
     @Autowired
-    private GreetingBundleImpl greetingImpl;
+    private Greeting greeting;
 
     @Autowired
-    private Quiz quizServiceRU;
+    private Quiz quizService;
+
+    @BeforeEach
+    void setTest(){
+        props.setLocale(new Locale("ru", "RU"));
+        fileReader.readFile("quizDatafile_ru_RU.csv");
+    }
 
     @Test
     @DisplayName("Тест когда номер вопроса меньше меньше или равен нулю")
     void AuthNoQuestionTest_1_RU() {
-        fileReader.readFile("quizDatafile_ru_RU.csv");
-        Assertions.assertEquals("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!", quizServiceRU.getQuestion(-1));
+        Assertions.assertEquals("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!", quizService.getQuestion(-1));
     }
 
     @Test
     @DisplayName("Тест когда номер вопроса меньше больше пяти")
     void AuthNoQuestionTest_2_RU() {
-        fileReader.readFile("quizDatafile_ru_RU.csv");
-        Assertions.assertEquals("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!", quizServiceRU.getQuestion(5));
+        Assertions.assertEquals("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!", quizService.getQuestion(5));
     }
 
     @Test
     @DisplayName("Тест на некорректный ответ")
     void AuthFailedTest_1_RU() {
-        fileReader.readFile("quizDatafile_ru_RU.csv");
         System.setIn(new ByteArrayInputStream("ПЯТЬ\n".getBytes()));
-        Assertions.assertEquals("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ! пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ!", quizServiceRU.getQuestion(0));
+        Assertions.assertEquals("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ! пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ!", quizService.getQuestion(0));
     }
 
     @Test
     @DisplayName("Тест на некорректный ответ")
     void AuthSuccessTest_1_RU() {
-        fileReader.readFile("quizDatafile_ru_RU.csv");
         System.setIn(new ByteArrayInputStream("ПЯТЬ\n".getBytes()));
-        Assertions.assertEquals("пїЅпїЅпїЅпїЅпїЅ!", quizServiceRU.getQuestion(4));
+        Assertions.assertEquals("пїЅпїЅпїЅпїЅпїЅ!", quizService.getQuestion(4));
     }
 }
