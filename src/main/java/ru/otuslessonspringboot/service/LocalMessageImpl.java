@@ -1,7 +1,6 @@
 package ru.otuslessonspringboot.service;
 
 import org.springframework.context.MessageSource;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
 import ru.otuslessonspringboot.config.YamlProps;
 
@@ -10,16 +9,9 @@ public class LocalMessageImpl implements LocalMessage {
     private MessageSource messageSource;
     private YamlProps props;
 
-    public LocalMessageImpl(YamlProps props){
-        this.setMessageSource(props);
+    public LocalMessageImpl(YamlProps props, MessageSource messageSource){
+        this.messageSource = messageSource;
         this.props = props;
-    }
-
-    private void setMessageSource(YamlProps props){
-        ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
-        ms.setBasename(props.getMessageSourceBasename());
-        ms.setDefaultEncoding(props.getMessageSourceEncoding());
-        this.messageSource = ms;
     }
 
     public String getMessage(String indexString) {
