@@ -25,12 +25,12 @@ public class QuizBundleImpl implements Quiz {
 
     public void startQuiz(){
         questionReader.readFile(props.getQuizDatafileName());
-        System.out.println("\n" + greeting.getGreeting());
+        //this.login();
         counter.resetCount();
         for(int i = 0; i < questionReader.questionValidation(i); i++) {
             this.getQuestion(i);
         }
-        System.out.print("\n" + counter.getResult() + "\n");
+        //this.printResult();
     }
 
     public String getQuestion(int questionNumber) {
@@ -48,5 +48,13 @@ public class QuizBundleImpl implements Quiz {
             counter.setRight();
             return localMessage.getMessage("quiz.right");
         }
+    }
+
+    public String login(){
+        return greeting.getGreeting();
+    }
+
+    public String printResult(){
+        return counter.getResult();
     }
 }
