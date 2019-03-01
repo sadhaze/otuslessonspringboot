@@ -17,40 +17,35 @@ public class ShellFlow {
     }
 
     @ShellMethodAvailability(LOGIN)
-    public Availability turnonLoginAvailability() {
-        return Availability.available();
-    }
-
-/*    @ShellMethodAvailability(LOGIN)
-    public Availability turnoffLoginAvailability() {
-        return Availability.unavailable("You are already logged in. End quiz before logged in again.");
-    }*/
-
-    @ShellMethodAvailability(QUIZ)
-    public Availability turnonQuizAvailability() {
-        return Availability.available();
+    public Availability isLoginAvailability() {
+        if(!quiz.isLogedIn()){
+            return Availability.available();
+        } else {
+            return Availability.unavailable("You are alrady loged in.");
+        }
     }
 
     @ShellMethodAvailability(QUIZ)
-    public Availability turnoffQuizAvailability() {
-        return Availability.unavailable("You are not logged in.");
+    public Availability isQuizAvailability() {
+        if(quiz.isLogedIn()){
+            return Availability.available();
+        } else {
+            return Availability.unavailable("You are not loged in.");
+        }
     }
-
-/*    @ShellMethodAvailability(PRINTRESULT)
-    public Availability turnonPrintResultAvailability() {
-        return Availability.available();
-    }*/
 
     @ShellMethodAvailability(PRINTRESULT)
-    public Availability turnoffPrintResultAvailability() {
-        return Availability.unavailable("You are not end the quiz.");
+    public Availability isPrintResultAvailability() {
+        if(quiz.getStatus() == "ended"){
+            return Availability.available();
+        } else {
+            return Availability.unavailable("Quiz is not ended.");
+        }
     }
 
     @ShellMethod(key=QUIZ, value = "Start the Quiz!")
     public String quiz(){
         quiz.startQuiz();
-        turnoffQuizAvailability();
-        //turnonPrintResultAvailability();
         return "Quiz is over";
     }
 
@@ -58,8 +53,6 @@ public class ShellFlow {
     public String login(){
         System.out.println();
         String result = quiz.login();
-        //turnoffLoginAvailability();
-        turnonQuizAvailability();
         return result;
     }
 
@@ -67,8 +60,6 @@ public class ShellFlow {
     public String printresult(){
         System.out.println();
         String result = quiz.printResult();
-        turnoffPrintResultAvailability();
-        turnonLoginAvailability();
         return result;
     }
 }

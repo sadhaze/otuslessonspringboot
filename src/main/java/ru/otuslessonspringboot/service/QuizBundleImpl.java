@@ -12,6 +12,8 @@ public class QuizBundleImpl implements Quiz {
     private Greeting greeting;
     private LocalMessage localMessage;
     private YamlProps props;
+    private boolean isLogedIn = false;
+    private String status = "notend";
 
     private Scanner scanner;
 
@@ -25,12 +27,11 @@ public class QuizBundleImpl implements Quiz {
 
     public void startQuiz(){
         questionReader.readFile(props.getQuizDatafileName());
-        //this.login();
         counter.resetCount();
         for(int i = 0; i < questionReader.questionValidation(i); i++) {
             this.getQuestion(i);
         }
-        //this.printResult();
+        this.status = "ended";
     }
 
     public String getQuestion(int questionNumber) {
@@ -51,10 +52,21 @@ public class QuizBundleImpl implements Quiz {
     }
 
     public String login(){
+        this.isLogedIn = true;
         return greeting.getGreeting();
     }
 
     public String printResult(){
+        this.isLogedIn = false;
+        this.status = "notend";
         return counter.getResult();
+    }
+
+    public boolean isLogedIn(){
+        return this.isLogedIn;
+    }
+
+    public String getStatus(){
+        return this.status;
     }
 }
