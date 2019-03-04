@@ -26,18 +26,10 @@ class GreetingTest {
     private Greeting greeting;
 
     @Test
-    @DisplayName("Тест приветствия english")
+    @DisplayName("Тест приветствия")
     void greetingTest_EN(){
         props.setLocale(new Locale("en", "EN"));
         System.setIn(new ByteArrayInputStream("Яимя\nЯфамилия\n".getBytes()));
         Assertions.assertEquals("Hello, Яфамилия Яимя!", greeting.getGreeting());
-    }
-
-    @Test
-    @DisplayName("Тест приветствия русский")
-    void greetingTest_RU(){
-        props.setLocale(new Locale("ru", "RU"));
-        System.setIn(new ByteArrayInputStream("Яимя\nЯфамилия\n".getBytes()));
-        Assertions.assertEquals("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, Яфамилия Яимя!", greeting.getGreeting());
     }
 }

@@ -10,31 +10,22 @@ import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import ru.otuslessonspringboot.config.YamlProps;
 
-import java.util.Locale;
-
 @SpringBootTest(properties = {
         InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
         ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
 })
-@DisplayName("Тест счетчика ответов")
-class AnswerCounterTest {
+@DisplayName("Тест файлридера")
+class CsvQuestionReaderDaoTest {
     @SpyBean
     private YamlProps props;
 
     @Autowired
-    private AnswerCounter answerCounter;
+    private CsvQuestionReaderDao fileReader;
 
     @Test
-    @DisplayName("Тест счетчика ответов")
-    void answerCounterTest_EN() {
-        props.setLocale(new Locale("en", "EN"));
-        answerCounter.resetCount();
-        answerCounter.setRight();
-        answerCounter.setWrong();
-        answerCounter.setRight();
-        answerCounter.setWrong();
-        answerCounter.setRight();
-
-        Assertions.assertEquals("Your score: 3 right and 2 wrong answers. Congratulations!", answerCounter.getResult());
+    @DisplayName("Тест файлридера")
+    void FileReaderTest() {
+        fileReader.readFile("quizDatafile_en_EN.csv");
+        Assertions.assertEquals("How much will 0*0?", fileReader.getQuestion(3));
     }
 }
