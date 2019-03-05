@@ -1,11 +1,11 @@
 package ru.otuslessonspringboot.service;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
@@ -29,6 +29,7 @@ class QuizTest {
     @Autowired
     private Quiz quizService;
 
+    @BeforeEach
     void set(){
         props.setLocale(new Locale("en", "EN"));
         fileReader.readFile("quizDatafile_en_EN.csv");
@@ -37,21 +38,18 @@ class QuizTest {
     @Test
     @DisplayName("Тест когда номер вопроса меньше меньше или равен нулю")
     void AuthNoQuestionunderFlowTest() {
-        this.set();
         Assertions.assertEquals("This questions doest exist!", quizService.getQuestion(-1));
     }
 
     @Test
     @DisplayName("Тест когда номер вопроса меньше больше пяти")
     void AuthNoQuestionOverFlowTest() {
-        this.set();
         Assertions.assertEquals("This questions doest exist!", quizService.getQuestion(5));
     }
 
     @Test
     @DisplayName("Тест на некорректный ответ")
     void AuthFailedTest() {
-        this.set();
         System.setIn(new ByteArrayInputStream("Five\n".getBytes()));
         Assertions.assertEquals("Wrong answer! Get lucky in next time!", quizService.getQuestion(0));
     }
@@ -59,7 +57,6 @@ class QuizTest {
     @Test
     @DisplayName("Тест на некорректный ответ")
     void AuthSuccessTest() {
-        this.set();
         System.setIn(new ByteArrayInputStream("Five\n".getBytes()));
         Assertions.assertEquals("Bingo!", quizService.getQuestion(4));
     }
